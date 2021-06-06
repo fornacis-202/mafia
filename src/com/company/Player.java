@@ -19,4 +19,8 @@ public class Player {
     public String getName() {
         return name;
     }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }

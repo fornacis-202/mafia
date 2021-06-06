@@ -66,4 +66,8 @@ public class Controller {
             send(player,string);
         }
     }
+
+    public HashMap<Player, Streams> getPlayerStreamsMap() {
+        return playerStreamsMap;
+    }
 }

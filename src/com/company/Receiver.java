@@ -27,7 +27,6 @@ public class Receiver implements Runnable{
         }
         finally {
             try {
-                in.close();
                 if(!socket.isClosed())
                      socket.close();
             } catch (IOException e) {

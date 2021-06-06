@@ -3,6 +3,7 @@ package com.company;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -26,6 +27,17 @@ public class GameStarter {
     }
 
     public static void main(String[] args) {
-        new GameStarter().join(8);
+        System.out.println("enter the number of the player: ");
+        int num;
+        while (true){
+            Scanner scanner = new Scanner(System.in);
+            num = scanner.nextInt();
+            if(num>=8)
+                break;
+            else
+                System.out.println("please enter a valid number");
+        }
+        new GameStarter().join(num);
+        new RoleGenerator(num).start();
     }
 }

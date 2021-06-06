@@ -27,7 +27,6 @@ public class Sender implements Runnable{
         }
         finally {
             try {
-                out.close();
                 if(!socket.isClosed())
                     socket.close();
             } catch (IOException e) {
