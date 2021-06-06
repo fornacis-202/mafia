@@ -19,10 +19,11 @@ public class Sender implements Runnable{
             String line;
             while (true){
                line = sc.nextLine();
+               out.flush();
                out.writeObject(line);
             }
         } catch (IOException e) {
-            System.out.println("output disconnected");
+            e.printStackTrace();
         }
         finally {
             try {

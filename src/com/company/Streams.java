@@ -12,10 +12,10 @@ public class Streams {
     public Streams(Socket socket){
         try {
             this.socket=socket;
-            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+             in = new ObjectInputStream(socket.getInputStream());
+             out = new ObjectOutputStream(socket.getOutputStream());
         }catch (IOException e){
-            System.out.println("streams did not created");
+            e.printStackTrace();
         }
     }
 

@@ -23,12 +23,13 @@ public class Receiver implements Runnable{
                 System.out.println(line);
             }
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("input disconnected");
+            e.printStackTrace();
         }
         finally {
             try {
                 in.close();
-                socket.close();
+                if(!socket.isClosed())
+                     socket.close();
             } catch (IOException e) {
                 System.out.println("can not close streams");
             }
