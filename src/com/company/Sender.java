@@ -28,7 +28,8 @@ public class Sender implements Runnable{
         finally {
             try {
                 out.close();
-                socket.close();
+                if(!socket.isClosed())
+                    socket.close();
             } catch (IOException e) {
                 System.out.println("can not close streams");
             }
