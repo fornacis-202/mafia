@@ -6,4 +6,17 @@ public class Player {
     private boolean isAlive;
     private boolean isProtected;
     private boolean isMuted;
+
+    public Player(String name){
+        this.name = name;
+        isAlive=true;
+        isMuted=false;
+        isProtected=false;
+
+    }
+
+
+    public String getName() {
+        return name;
+    }
 }
