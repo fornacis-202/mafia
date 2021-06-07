@@ -23,14 +23,15 @@ public class Receiver implements Runnable{
                 System.out.println(line);
             }
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println(ConsoleColor.RESET+"you got disconnected");
+            System.exit(0);
         }
         finally {
             try {
                 if(!socket.isClosed())
                      socket.close();
             } catch (IOException e) {
-                System.out.println("can not close streams");
+                //nothing
             }
 
         }

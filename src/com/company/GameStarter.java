@@ -14,17 +14,17 @@ public class GameStarter {
             //connecting to client
             ServerSocket welcomingSocket = new ServerSocket(8080);
             ExecutorService executorService = Executors.newCachedThreadPool();
-            for (int i = 0 ; i < num ; i++){
+            while (Controller.getInstance().getSize()<num){
                 Socket socket = welcomingSocket.accept();
-                executorService.execute(new PlayerBuilder(socket));
+                executorService.execute(new PlayerBuilder(socket,num));
 
             }
-            executorService.shutdown();
             welcomingSocket.close();
+            executorService.shutdown();
             while (!(executorService.isTerminated()));
 
         }catch (IOException e){
-            System.out.println("no connection");
+            System.out.println("welcoming socket closed");
 
         }
 
@@ -47,6 +47,7 @@ public class GameStarter {
                 System.out.println("please enter a valid number");
         }
         GameStarter gameStarter = new GameStarter();
+        Controller.getInstance().setMaxNum(num);
         gameStarter.join(num);
         new RoleGenerator(num).start();
         gameStarter.waitForReady();

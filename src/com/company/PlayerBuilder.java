@@ -5,8 +5,10 @@ import java.net.Socket;
 
 public class PlayerBuilder implements Runnable{
     private Socket socket ;
-    public PlayerBuilder(Socket socket){
+    private int num;
+    public PlayerBuilder(Socket socket,int num){
         this.socket = socket;
+        this.num=num;
 
     }
     @Override
@@ -19,18 +21,24 @@ public class PlayerBuilder implements Runnable{
                 name= (String) streams.getIn().readObject();
                 name=name.trim();
                 Player player = new Player(name);
-                if(Controller.getInstance().addPlayer(player,streams)){
+                try {
+                Controller.getInstance().addPlayer(player,streams);
                     streams.getOut().writeObject(ConsoleColor.BLUE_BOLD + "waiting for others to join...");
+                    ConnectionChecker.getInstance().addPlayer(player,streams);
                     break;
-                }else {
+                }catch (NameExistsException e){
                     streams.getOut().writeObject(ConsoleColor.BLUE_BOLD + "this player already exists ");
 
+                }catch (RoomIsFullException e){
+                    streams.getOut().writeObject(ConsoleColor.BLUE_BOLD + "room is full! ");
+                    socket.close();
+                    break;
                 }
 
             }
 
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+           //nothing yet
         }
 
     }

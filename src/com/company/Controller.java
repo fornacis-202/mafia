@@ -1,8 +1,7 @@
 package com.company;
 
-import javax.imageio.IIOException;
 import java.io.IOException;
-import java.nio.channels.InterruptedByTimeoutException;
+import java.net.ServerSocket;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.Callable;
@@ -13,6 +12,8 @@ import java.util.concurrent.TimeUnit;
 public class Controller {
     private static Controller instance = null;
     private HashMap<Player,Streams> playerStreamsMap;
+    private int maxNum;
+    private ServerSocket welcomingSocket;
 
     private Controller(){
         playerStreamsMap = new HashMap<>();
@@ -25,13 +26,34 @@ public class Controller {
         return instance;
     }
 
-    public synchronized boolean addPlayer(Player player , Streams streams){
+    public void setWelcomingSocket(ServerSocket welcomingSocket) {
+        this.welcomingSocket = welcomingSocket;
+    }
+
+    public void setMaxNum(int num){
+        maxNum=num;
+    }
+
+    public int getSize(){
+        return playerStreamsMap.size();
+    }
+
+    public synchronized void addPlayer(Player player , Streams streams) throws RoomIsFullException, NameExistsException {
           for(Player player1 : playerStreamsMap.keySet()){
+              if(getSize()>=maxNum) {
+                  try {
+                      welcomingSocket.close();
+                  } catch (IOException e) {
+                      //nothing yet
+                  }
+                  throw new RoomIsFullException();
+              }
+
               if(player.getName().equals(player1.getName()))
-                  return false;
+                  throw new NameExistsException();
           }
           playerStreamsMap.put(player,streams);
-          return true;
+
     }
 
     public void send(Player player,String string){
@@ -127,6 +149,9 @@ public class Controller {
         for (Player player : playerStreamsMap.keySet()){
             send(player,string);
         }
+    }
+    public void removePlayer(Player player){
+        playerStreamsMap.remove(player);
     }
 
     public HashMap<Player, Streams> getPlayerStreamsMap() {
