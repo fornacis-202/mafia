@@ -18,6 +18,8 @@ public class GameStarter {
                 executorService.execute(new PlayerBuilder(socket));
 
             }
+            executorService.shutdown();
+            while (!(executorService.isTerminated()));
 
         }catch (IOException e){
             System.out.println("no connection");
