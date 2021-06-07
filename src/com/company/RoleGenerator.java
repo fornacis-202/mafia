@@ -19,17 +19,31 @@ public class RoleGenerator {
         int cityNum=num-mafiaNum;
         ArrayList<Role> roles =new ArrayList<>();
         roleAdder(roles,Role.GOD_FATHER);
-        roleAdder(roles,Role.DOCTOR_LECTER);
-        for (int i=0;i<mafiaNum-2;i++){
+        mafiaNum--;
+        if(mafiaNum>0)
+            roleAdder(roles,Role.DOCTOR_LECTER);
+        mafiaNum--;
+        for (;mafiaNum>0;mafiaNum--){
             roleAdder(roles,Role.MAFIA);
         }
         roleAdder(roles,Role.DOCTOR);
-        roleAdder(roles,Role.DETECTIVE);
-        roleAdder(roles,Role.SNIPER);
-        roleAdder(roles,Role.ARMORED);
-        roleAdder(roles,Role.MAYOR);
-        roleAdder(roles,Role.PSYCHOLOGIST);
-        for (int i=0;i<cityNum-6;i++){
+        cityNum--;
+        if(cityNum>0)
+            roleAdder(roles,Role.DETECTIVE);
+        cityNum--;
+        if(cityNum>0)
+            roleAdder(roles,Role.SNIPER);
+        cityNum--;
+        if(cityNum>0)
+            roleAdder(roles,Role.ARMORED);
+        cityNum--;
+        if(cityNum>0)
+            roleAdder(roles,Role.MAYOR);
+        cityNum--;
+        if(cityNum>0)
+            roleAdder(roles,Role.PSYCHOLOGIST);
+        cityNum--;
+        for (;cityNum>0;cityNum--){
             roleAdder(roles,Role.CITIZEN);
         }
         return roles;
