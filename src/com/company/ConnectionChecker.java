@@ -38,7 +38,7 @@ public class ConnectionChecker {
     public void deletePlayerEverywhere(Player player){
         Controller.getInstance().removePlayer(player);
         Game.getInstance().removePlayer(player);
-        Controller.getInstance().sendToAll(ConsoleColor.BLUE_BOLD + player.getName() + " left the match.");
+        Controller.getInstance().sendToAll(ConsoleColor.YELLOW+ player.getName() +ConsoleColor.BLUE_BOLD +" left the match.");
     }
 
 

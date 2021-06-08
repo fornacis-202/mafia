@@ -15,6 +15,9 @@ public class Player {
 
     }
 
+    public boolean isAlive() {
+        return isAlive;
+    }
 
     public String getName() {
         return name;
@@ -22,5 +25,9 @@ public class Player {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Role getRole() {
+        return role;
     }
 }

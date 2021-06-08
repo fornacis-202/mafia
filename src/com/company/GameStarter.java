@@ -14,6 +14,7 @@ public class GameStarter {
             //connecting to client
             ServerSocket welcomingSocket = new ServerSocket(8080);
             ExecutorService executorService = Executors.newCachedThreadPool();
+            Controller.getInstance().setWelcomingSocket(welcomingSocket);
             while (Controller.getInstance().getSize()<num){
                 Socket socket = welcomingSocket.accept();
                 executorService.execute(new PlayerBuilder(socket,num));
@@ -29,6 +30,12 @@ public class GameStarter {
         }
 
     }
+    public void initialGame(){
+        for (Player player:Controller.getInstance().getPlayerStreamsMap().keySet()){
+            Game.getInstance().addPlayer(player);
+        }
+        Game.getInstance().setController(Controller.getInstance());
+    }
     public void waitForReady(){
         Controller.getInstance().sendToAll(ConsoleColor.BLUE_BOLD + "send 1 if you are ready ");
         HashMap<Player,Integer> playerIntegerHashMap=Controller.getInstance().receiveIntFromAll(1,1);
@@ -41,13 +48,14 @@ public class GameStarter {
         while (true){
             Scanner scanner = new Scanner(System.in);
             num = scanner.nextInt();
-            if(num>=4)
+            if(num>=2)
                 break;
             else
                 System.out.println("please enter a valid number");
         }
         GameStarter gameStarter = new GameStarter();
         Controller.getInstance().setMaxNum(num);
+
         gameStarter.join(num);
         new RoleGenerator(num).start();
         gameStarter.waitForReady();

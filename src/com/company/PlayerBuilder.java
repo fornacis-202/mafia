@@ -19,20 +19,21 @@ public class PlayerBuilder implements Runnable{
             while (true){
                 streams.getOut().writeObject(ConsoleColor.BLUE_BOLD + "write your name : ");
                 name= (String) streams.getIn().readObject();
-                name=name.trim();
+                name= "Ɨ" + name.trim() + "Ɨ";
                 Player player = new Player(name);
                 try {
                 Controller.getInstance().addPlayer(player,streams);
                     streams.getOut().writeObject(ConsoleColor.BLUE_BOLD + "waiting for others to join...");
                     ConnectionChecker.getInstance().addPlayer(player,streams);
-                    break;
+                    return;
                 }catch (NameExistsException e){
                     streams.getOut().writeObject(ConsoleColor.BLUE_BOLD + "this player already exists ");
 
                 }catch (RoomIsFullException e){
                     streams.getOut().writeObject(ConsoleColor.BLUE_BOLD + "room is full! ");
                     socket.close();
-                    break;
+                    return;
+
                 }
 
             }
