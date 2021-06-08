@@ -20,15 +20,25 @@ public class Game {
     }
     public void start(){
         initialMafias();
-
+        introductionNight();
         while (true){
+
 
         }
 
     }
+    private void day(String nightEvent){
+        controller.sendToAll(ConsoleColor.BLUE_BOLD + "change to "+ ConsoleColor.GREEN_BRIGHT + "Day!");
+        if(nightEvent!=null && !nightEvent.equals("")){
+            controller.sendToAll(ConsoleColor.BLUE_BOLD + "Night event:\n" + ConsoleColor.PURPLE + nightEvent);
+            sleep(5);
+        }
+        //check game end
+        new ChatRoom(5,players).start();
+    }
 
-    public void introductionNight(){
-        controller.sendToAll(ConsoleColor.BLUE_BOLD + "change to "+ ConsoleColor.BLACK_BRIGHT + "Introduction Night");
+    private void introductionNight(){
+        controller.sendToAll(ConsoleColor.BLUE_BOLD + "change to "+ ConsoleColor.BLACK_BRIGHT + "Introduction Night!");
         sendToMafias(ConsoleColor.RED+mafiasRoles());
         Player mayor;
         Player doctor;
