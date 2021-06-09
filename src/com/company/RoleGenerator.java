@@ -28,20 +28,24 @@ public class RoleGenerator {
         }
         roleAdder(roles,Role.DOCTOR);
         cityNum--;
+        if(cityNum>0) {
+            roleAdder(roles, Role.SNIPER);
+        }
+        cityNum--;
+        if(cityNum>0) {
+            roleAdder(roles, Role.ARMORED);
+        }
+        cityNum--;
+        if(cityNum>0) {
+            roleAdder(roles, Role.MAYOR);
+        }
+        cityNum--;
+        if(cityNum>0) {
+            roleAdder(roles, Role.PSYCHOLOGIST);
+        }
+        cityNum--;
         if(cityNum>0)
             roleAdder(roles,Role.DETECTIVE);
-        cityNum--;
-        if(cityNum>0)
-            roleAdder(roles,Role.SNIPER);
-        cityNum--;
-        if(cityNum>0)
-            roleAdder(roles,Role.ARMORED);
-        cityNum--;
-        if(cityNum>0)
-            roleAdder(roles,Role.MAYOR);
-        cityNum--;
-        if(cityNum>0)
-            roleAdder(roles,Role.PSYCHOLOGIST);
         cityNum--;
         for (;cityNum>0;cityNum--){
             roleAdder(roles,Role.CITIZEN);
@@ -55,7 +59,7 @@ public class RoleGenerator {
         for (Player player : Controller.getInstance().getPlayerStreamsMap().keySet()){
             index = random.nextInt(roles.size());
             player.setRole(roles.get(index));
-            Controller.getInstance().send(player,ConsoleColor.BLUE_BOLD + "your role is : \"" + roles.get(index).name() + "\" !");
+            Controller.getInstance().send(player,ConsoleColor.BLUE_BOLD + "your role is : "+ConsoleColor.PURPLE + roles.get(index).name()+ConsoleColor.BLUE_BOLD + " !");
             roles.remove(index);
         }
     }

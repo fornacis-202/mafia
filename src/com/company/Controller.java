@@ -73,6 +73,7 @@ public class Controller {
 
     public String receiveString(Player player) {
         try {
+            //playerStreamsMap.get(player).getIn()
             return (String) playerStreamsMap.get(player).getIn().readObject();
         } catch (IOException | ClassNotFoundException e) {
             return null;

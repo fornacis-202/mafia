@@ -10,6 +10,8 @@ public class Game {
 
     private Game() {
         players = new ArrayList<>();
+        controller = Controller.getInstance();
+        mafias=new ArrayList<>();
     }
 
     public static Game getInstance() {
@@ -21,7 +23,9 @@ public class Game {
     public void start(){
         initialMafias();
         introductionNight();
+        String nightEvent=null;
         while (true){
+            day(nightEvent);
 
 
         }
@@ -35,6 +39,31 @@ public class Game {
         }
         //check game end
         new ChatRoom(5,players).start();
+        Player player = new DayVoting(players,30).start();
+        mayorOperation(player);
+
+
+    }
+
+    public void mayorOperation(Player player){
+        Player mayor;
+        if((mayor=roleFinder(Role.MAYOR))!=null&& mayor.isAlive() && player!=null && !player.getRole().equals(Role.MAYOR) ){
+            controller.send(mayor,ConsoleColor.YELLOW + player.getName() + ConsoleColor.CYAN + " is going to be kicked out ,do you want to cancel it?\n1)Yes\n2)No");
+            Integer num=controller.receiveInt(mayor,1,2);
+            if(!(num==null) && num==1){
+                controller.sendToAll(ConsoleColor.PURPLE + "MAYOR" + ConsoleColor.BLUE_BOLD + " canceled voting!");
+            }else {
+                killInDay(player);
+            }
+        }else if(player!=null){
+            killInDay(player);
+        }
+    }
+    public void killInDay(Player player){
+        player.setAlive(false);
+        controller.sendToAll(ConsoleColor.YELLOW + player.getName()+ ConsoleColor.BLUE_BOLD + " was kicked out!");
+        controller.send(player,ConsoleColor.BLUE_BOLD + "You were kicked out of the game :( \n you can still spectate the game or you can type\"exit\"to leave the game. ");
+        mafias.remove(player);
     }
 
     private void introductionNight(){
@@ -60,7 +89,7 @@ public class Game {
 
     public void sleep(int seconds){
         try {
-            Thread.sleep(seconds);
+            Thread.sleep(seconds* 1000);
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
         }
@@ -76,19 +105,16 @@ public class Game {
 
     private void initialMafias(){
         for (Player player : players){
-            if(player.getRole()==Role.GOD_FATHER||player.getRole()==Role.DOCTOR_LECTER||player.getRole()==Role.MAFIA){
+            if(player.getRole().equals(Role.GOD_FATHER)||player.getRole().equals(Role.DOCTOR_LECTER)||player.getRole().equals(Role.MAFIA)){
                 mafias.add(player);
             }
         }
-    }
 
-    public void setController(Controller controller) {
-        this.controller = controller;
     }
 
     public Player roleFinder(Role role){
         for(Player player : players){
-            if(player.getRole()==role && player.isAlive()){
+            if(player.getRole().equals(role) && player.isAlive()){
                 return player;
             }
         }

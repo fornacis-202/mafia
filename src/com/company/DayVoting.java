@@ -15,7 +15,11 @@ public class DayVoting {
     Controller controller;
 
     public DayVoting(ArrayList<Player> players,int seconds){
-        this.players=(ArrayList<Player>) players.clone();
+        for(Player player : players){
+            if(player.isAlive()){
+                this.players.add(player);
+            }
+        }
         this.seconds=seconds;
         controller=Controller.getInstance();
     }
@@ -51,7 +55,7 @@ public class DayVoting {
                         if (num == null)
                             return null;
                         playerIntegerHashMap.put(player, num);
-                        return null;
+
                     }
                 }
             });
@@ -79,12 +83,12 @@ public class DayVoting {
                 max = e;
         }
 
-        return players.get(max.getKey());
+        return players.get(max.getKey()-1);
     }
     private void sendResult(HashMap<Player,Integer> playerIntegerHashMap){
         String result="";
         for (Player player : playerIntegerHashMap.keySet()){
-            result+=ConsoleColor.YELLOW + player.getName() + ConsoleColor.BLUE_BOLD + " voted to " + ConsoleColor.YELLOW + players.get(playerIntegerHashMap.get(player))+"\n";
+            result+=ConsoleColor.YELLOW + player.getName() + ConsoleColor.BLUE_BOLD + " voted to " + ConsoleColor.YELLOW + players.get(playerIntegerHashMap.get(player)-1).getName()+"\n";
         }
         if(result.equals("")){
             result=ConsoleColor.BLUE_BOLD + "Nobody voted!\n";

@@ -20,7 +20,9 @@ public class Receiver implements Runnable{
             String line;
             while (true){
                 line = (String) in.readObject();
-                System.out.println(line);
+                if(!(line.equals(""))){
+                    System.out.println(line);
+                }
             }
         } catch (IOException | ClassNotFoundException e) {
             System.out.println(ConsoleColor.RESET+"you got disconnected");

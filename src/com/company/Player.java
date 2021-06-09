@@ -19,6 +19,10 @@ public class Player {
         return isAlive;
     }
 
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+
     public String getName() {
         return name;
     }

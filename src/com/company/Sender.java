@@ -19,7 +19,7 @@ public class Sender implements Runnable{
             String line;
             while (true){
                line = sc.nextLine();
-               out.flush();
+               out.reset();
                out.writeObject(line);
             }
         } catch (IOException e) {

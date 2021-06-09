@@ -26,9 +26,14 @@ public class ConnectionChecker {
             public void run() {
                 try {
                     while (true){
-                        streams.getIn().readObject();
+                        streams.getOut().writeObject("");
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException ie) {
+                            Thread.currentThread().interrupt();
+                        }
                     }
-                }catch (IOException | ClassNotFoundException e){
+                }catch (IOException  e){
                     deletePlayerEverywhere(player);
                 }
             }

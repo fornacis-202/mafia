@@ -34,7 +34,7 @@ public class GameStarter {
         for (Player player:Controller.getInstance().getPlayerStreamsMap().keySet()){
             Game.getInstance().addPlayer(player);
         }
-        Game.getInstance().setController(Controller.getInstance());
+
     }
     public void waitForReady(){
         Controller.getInstance().sendToAll(ConsoleColor.BLUE_BOLD + "send 1 if you are ready ");
@@ -59,6 +59,8 @@ public class GameStarter {
         gameStarter.join(num);
         new RoleGenerator(num).start();
         gameStarter.waitForReady();
+        gameStarter.initialGame();
+        Game.getInstance().start();
 
     }
 }

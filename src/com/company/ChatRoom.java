@@ -23,25 +23,26 @@ public class ChatRoom {
         HashSet<Callable<Boolean>> callables = new HashSet<>();
 
         for (Player player : players) {
-            callables.add(new Callable<Boolean>() {
-                @Override
-                public Boolean call() throws Exception {
-                    String message;
-                    while (true){
-                        message=controller.receiveString(player);
-                        if(message==null){
-                            return null;
-                        }else if(message.trim().equals("ready")){
-                            controller.sendToAll(ConsoleColor.YELLOW +player.getName()+ConsoleColor.BLUE_BOLD + "is ready to vote!");
-                            return null;
-                        }
-                        else {
-                            controller.sendToAll(ConsoleColor.YELLOW +player.getName()+ ":" +message);
-                        }
+            if(player.isAlive()) {
+                callables.add(new Callable<Boolean>() {
+                    @Override
+                    public Boolean call() throws Exception {
+                        String message;
+                        while (true) {
+                            message = controller.receiveString(player);
+                            if (message == null) {
+                                return null;
+                            } else if (message.trim().equals("ready")) {
+                                controller.sendToAll(ConsoleColor.YELLOW + player.getName() + ConsoleColor.BLUE_BOLD + " is ready to vote!");
+                                return null;
+                            } else {
+                                controller.sendToAll(ConsoleColor.YELLOW + player.getName() + ":" + ConsoleColor.YELLOW_BRIGHT + message);
+                            }
 
+                        }
                     }
-                }
-            });
+                });
+            }
         }
         try {
             executorService.invokeAll(callables, time, TimeUnit.MINUTES);
