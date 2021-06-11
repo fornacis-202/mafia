@@ -48,7 +48,7 @@ public class Game {
     }
 
     private String night() {
-        controller.sendToAll(ConsoleColor.BLUE_BOLD + "Change to " + ConsoleColor.BLUE_BRIGHT + "Night!");
+        controller.sendToAll(ConsoleColor.BLUE_BOLD + "Change to " + ConsoleColor.BLACK_BRIGHT + "Night!");
         int aliveMafia=0;
         for (Player player : mafias){
             if(player.isAlive())
@@ -120,7 +120,7 @@ public class Game {
     private Player lectorOperation() {
         Player lector;
         if ((lector = roleFinder(Role.DOCTOR_LECTER)) != null && (mafias.size() > 1 || lector.getAbilityRemain() > 0)) {
-            controller.send(lector, ConsoleColor.RED + "Chose someone to protect\n");
+            controller.send(lector, ConsoleColor.RED + "Chose someone to protect:");
             Player lectorChoice = new NightChoices(mafias, lector, ConsoleColor.RED).start((lector.getAbilityRemain()>0));
             if (lectorChoice != null && lectorChoice.equals(lector)) {
 
@@ -134,7 +134,7 @@ public class Game {
     private Player doctorOperation() {
         Player doctor;
         if ((doctor = roleFinder(Role.DOCTOR)) != null) {
-            controller.send(doctor, ConsoleColor.CYAN + "Chose someone to protect\n");
+            controller.send(doctor, ConsoleColor.CYAN + "Chose someone to protect:");
             Player doctorChoice = new NightChoices(players, doctor, ConsoleColor.CYAN).start((doctor.getAbilityRemain()>0));
             if (doctorChoice != null && doctorChoice.equals(doctor)) {
 
@@ -151,7 +151,7 @@ public class Game {
             controller.send(sniper, ConsoleColor.CYAN + "Do you want to shoot?\n1)Yes\n2)No\n");
             Integer num = controller.receiveInt(sniper, 1, 2);
             if (num != null && num == 1) {
-                controller.send(sniper, ConsoleColor.CYAN + "Chose someone to shoot\n");
+                controller.send(sniper, ConsoleColor.CYAN + "Chose someone to shoot:");
                 Player sniperChoice = new NightChoices(players, sniper, ConsoleColor.CYAN).start(false);
                 return sniperChoice;
             }

@@ -51,6 +51,7 @@ public class ChatRoom {
         try {
             executorService.invokeAll(callables, time, TimeUnit.MINUTES);
             executorService.shutdownNow();
+            Thread thread = new Thread();
         } catch (InterruptedException e) {
             //nothing yet
         }

@@ -29,10 +29,6 @@ public class RoleGenerator {
         roleAdder(roles,Role.DOCTOR);
         cityNum--;
         if(cityNum>0) {
-            roleAdder(roles, Role.SNIPER);
-        }
-        cityNum--;
-        if(cityNum>0) {
             roleAdder(roles, Role.ARMORED);
         }
         cityNum--;
@@ -41,11 +37,16 @@ public class RoleGenerator {
         }
         cityNum--;
         if(cityNum>0) {
+            roleAdder(roles, Role.DETECTIVE);
+        }
+        cityNum--;
+        if(cityNum>0) {
             roleAdder(roles, Role.PSYCHOLOGIST);
         }
         cityNum--;
-        if(cityNum>0)
-            roleAdder(roles,Role.DETECTIVE);
+        if(cityNum>0) {
+            roleAdder(roles, Role.SNIPER);
+        }
         cityNum--;
         for (;cityNum>0;cityNum--){
             roleAdder(roles,Role.CITIZEN);

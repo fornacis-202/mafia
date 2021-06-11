@@ -75,6 +75,8 @@ public class DayVoting {
         }
     }
     private Player result(ArrayList<Integer> votes){
+        if(votes.size()==0)
+            return null;
         HashMap<Integer, Integer> map = new HashMap<>();
 
         for (Integer integer : votes) {
