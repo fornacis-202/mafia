@@ -27,9 +27,7 @@ public class Game {
         String nightEvent = null;
         while (true) {
             day(nightEvent);
-            night();
-
-
+            nightEvent=night();
         }
 
     }
@@ -49,18 +47,54 @@ public class Game {
 
     }
 
-    private void night() {
+    private String night() {
         controller.sendToAll(ConsoleColor.BLUE_BOLD + "Change to " + ConsoleColor.BLUE_BRIGHT + "Night!");
-        if(mafias.size()>1)
+        int aliveMafia=0;
+        for (Player player : mafias){
+            if(player.isAlive())
+                aliveMafia++;
+        }
+        if(aliveMafia>1)
             new ChatRoom(1,mafias,ConsoleColor.RED).start();
         Player mafiaShot=mafiaShoot();
         Player lectorChoice = lectorOperation();
         Player doctorChoice = doctorOperation();
         detectiveOperation();
         Player sniperChoice = sniperOperation();
+        Player sniper = roleFinder(Role.SNIPER);
         Player psychologistChoice = psychologistOperation();
         boolean armoredChoice = armoredOperation();
+        return calculateResult(mafiaShot,lectorChoice,doctorChoice,sniperChoice,sniper,psychologistChoice,armoredChoice);
 
+    }
+    private String calculateResult(Player mafiaShot,Player lectorChoice,Player doctorChoice,Player sniperChoice,Player sniper,Player psychologistChoice,boolean armoredChoice){
+        String result = "";
+        if(mafiaShot!=null && !mafiaShot.getRole().equals(Role.ARMORED) && !mafiaShot.equals(doctorChoice)){
+            killAtNight(mafiaShot);
+            result += ConsoleColor.YELLOW + mafiaShot.getName() +ConsoleColor.CYAN_BOLD +" was killed last night.\n";
+        }
+        if(sniperChoice!=null){
+            if((sniperChoice.getRole().equals(Role.GOD_FATHER) || sniperChoice.getRole().equals(Role.DOCTOR_LECTER) || sniperChoice.equals(Role.MAFIA))){
+                if(!sniperChoice.equals(lectorChoice)){
+                    killAtNight(sniperChoice);
+                    result += ConsoleColor.YELLOW + sniperChoice.getName() +ConsoleColor.CYAN_BOLD +" was killed last night.\n";
+                }
+            }else {
+                result += ConsoleColor.YELLOW + sniper.getName() +ConsoleColor.CYAN_BOLD +" was killed last night.\n";
+            }
+        }
+        if(psychologistChoice!=null && psychologistChoice.isAlive()){
+            psychologistChoice.setMuted(true);
+            result += ConsoleColor.YELLOW + psychologistChoice.getName() +ConsoleColor.CYAN_BOLD +" should be muted today :)\n";
+        }
+        if(armoredChoice){
+            result+=ConsoleColor.CYAN_BOLD + "Remaining roles :\n";
+            for(Player player:players){
+                if(player.isAlive())
+                    result+=ConsoleColor.CYAN_BOLD + player.getRole() + "\n";
+            }
+        }
+        return result;
 
     }
     private Player mafiaShoot(){
@@ -76,7 +110,7 @@ public class Game {
             else
                 chooser=roleFinder(Role.MAFIA);
 
-            controller.send(chooser, ConsoleColor.RED + "Chose someone to kill\n");
+            controller.send(chooser, ConsoleColor.RED + "Chose someone to kill:");
             mafiaShoot = new NightChoices(players,chooser, ConsoleColor.RED).start(true);
 
         }
@@ -213,6 +247,11 @@ public class Game {
         player.setAlive(false);
         controller.sendToAll(ConsoleColor.YELLOW + player.getName() + ConsoleColor.BLUE_BOLD + " was kicked out!");
         controller.send(player, ConsoleColor.BLUE_BOLD + "You were kicked out of the game :( \nYou can still spectate the game or you can type\"exit\"to leave the game. ");
+    }
+
+    public void killAtNight(Player player){
+        player.setAlive(false);
+        controller.send(player, ConsoleColor.BLUE_BOLD + "You were killed :( \nYou can still spectate the game or you can type\"exit\"to leave the game. ");
     }
 
     private void introductionNight() {

@@ -82,6 +82,7 @@ public class Controller {
             //playerStreamsMap.get(player).getIn()
             return (String) playerStreamsMap.get(player).getIn().readObject();
         } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
             return null;
             //should be added sth
         }

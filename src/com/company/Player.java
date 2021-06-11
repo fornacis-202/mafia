@@ -21,6 +21,10 @@ public class Player {
         return isMuted;
     }
 
+    public void setMuted(boolean muted) {
+        isMuted = muted;
+    }
+
     public boolean isProtected() {
         return isProtected;
     }

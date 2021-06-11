@@ -1,9 +1,7 @@
 package com.company;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,7 +28,6 @@ public class ChatRoom {
                 callables.add(new Callable<Boolean>() {
                     @Override
                     public Boolean call() throws Exception {
-
                         String message;
                         while (true) {
                             message = controller.receiveString(player);

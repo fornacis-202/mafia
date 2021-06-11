@@ -25,11 +25,17 @@ public class NightChoices {
                 }
             }
         }
-        Controller.getInstance().send(player,options);
-        Integer num = Controller.getInstance().receiveInt(player,1,optionPlayers.size());
-        if(num !=null)
-            return optionPlayers.get(num-1);
-        else
+        try {
+            Controller.getInstance().send(player,options);
+            Integer num = Controller.getInstance().receiveInt(player,1,optionPlayers.size());
+            System.out.println("num is : "+num);
+            if(num !=null)
+                return optionPlayers.get(num-1);
+            else
+                return null;
+        }
+        catch (NullPointerException e){
             return null;
+        }
     }
 }
