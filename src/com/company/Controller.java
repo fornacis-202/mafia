@@ -2,6 +2,7 @@ package com.company;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.Callable;
@@ -70,6 +71,11 @@ public class Controller {
             //should be added sth
         }
     }
+    public void sendToGroup(ArrayList<Player> group, String string){
+        for (Player player : group) {
+            send(player, string);
+        }
+    }
 
     public String receiveString(Player player) {
         try {
@@ -78,6 +84,11 @@ public class Controller {
         } catch (IOException | ClassNotFoundException e) {
             return null;
             //should be added sth
+        }
+    }
+    public void closeEverything(){
+        for (Player player : playerStreamsMap.keySet()){
+            playerStreamsMap.get(player).close();
         }
     }
 

@@ -1,5 +1,6 @@
 package com.company;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,6 +16,7 @@ public class DayVoting {
     Controller controller;
 
     public DayVoting(ArrayList<Player> players,int seconds){
+        this.players=new ArrayList<>();
         for(Player player : players){
             if(player.isAlive()){
                 this.players.add(player);
@@ -52,6 +54,9 @@ public class DayVoting {
                     Integer num;
                     while (true) {
                         num = controller.receiveInt(player, 1, players.size());
+                        if(Thread.currentThread().isInterrupted()){
+                            return null;
+                        }
                         if (num == null)
                             return null;
                         playerIntegerHashMap.put(player, num);
@@ -62,6 +67,7 @@ public class DayVoting {
         }
         try {
             executorService.invokeAll(callables, seconds, TimeUnit.SECONDS);
+            executorService.shutdownNow();
             return playerIntegerHashMap;
         } catch (InterruptedException e) {
             //nothing yet

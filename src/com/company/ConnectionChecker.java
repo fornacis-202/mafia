@@ -35,6 +35,7 @@ public class ConnectionChecker {
                     }
                 }catch (IOException  e){
                     deletePlayerEverywhere(player);
+                    Game.getInstance().endGame();
                 }
             }
         });

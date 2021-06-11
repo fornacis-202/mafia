@@ -4,6 +4,7 @@ public class Player {
     private String name;
     private Role role;
     private boolean isAlive;
+    private int abilityRemain;
     private boolean isProtected;
     private boolean isMuted;
 
@@ -13,6 +14,31 @@ public class Player {
         isMuted=false;
         isProtected=false;
 
+
+    }
+
+    public boolean isMuted() {
+        return isMuted;
+    }
+
+    public boolean isProtected() {
+        return isProtected;
+    }
+
+    public void setProtected(boolean aProtected) {
+        isProtected = aProtected;
+    }
+
+    public int getAbilityRemain() {
+        return abilityRemain;
+    }
+
+    public void oneUseAbility(){
+        abilityRemain--;
+    }
+
+    public void setAbilityRemain(int abilityRemain) {
+        this.abilityRemain = abilityRemain;
     }
 
     public boolean isAlive() {

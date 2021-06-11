@@ -59,6 +59,12 @@ public class RoleGenerator {
         for (Player player : Controller.getInstance().getPlayerStreamsMap().keySet()){
             index = random.nextInt(roles.size());
             player.setRole(roles.get(index));
+            if(roles.get(index).equals(Role.DOCTOR)||roles.get(index).equals(Role.DOCTOR_LECTER)){
+                player.setAbilityRemain(1);
+            }else if( roles.get(index).equals(Role.ARMORED)){
+                player.setAbilityRemain(2);
+                player.setProtected(true);
+            }
             Controller.getInstance().send(player,ConsoleColor.BLUE_BOLD + "your role is : "+ConsoleColor.PURPLE + roles.get(index).name()+ConsoleColor.BLUE_BOLD + " !");
             roles.remove(index);
         }
