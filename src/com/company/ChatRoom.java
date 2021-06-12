@@ -2,10 +2,7 @@ package com.company;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class ChatRoom {
     private int time;
@@ -22,6 +19,7 @@ public class ChatRoom {
         ExecutorService executorService = Executors.newCachedThreadPool();
         HashMap<Player, Integer> playerIntegerHashMap = new HashMap<>();
         HashSet<Callable<Boolean>> callables = new HashSet<>();
+        ArrayList<Player> readyPlayers = new ArrayList<>();
 
         for (Player player : players) {
             if(player.isAlive() && !player.isMuted()) {
@@ -38,6 +36,7 @@ public class ChatRoom {
                                 return null;
                             } else if (message.trim().equals("ready")) {
                                 controller.sendToGroup(players,ConsoleColor.YELLOW + player.getName() + color + " is ready!");
+                                readyPlayers.add(player);
                                 return null;
                             } else {
                                 controller.sendToGroup(players,ConsoleColor.YELLOW + player.getName() + ":" + ConsoleColor.YELLOW_BRIGHT + message);
@@ -49,11 +48,14 @@ public class ChatRoom {
             }
         }
         try {
-            executorService.invokeAll(callables, time, TimeUnit.MINUTES);
+            List<Future<Boolean>>future = executorService.invokeAll(callables, time, TimeUnit.MINUTES);
             executorService.shutdownNow();
-            Thread thread = new Thread();
-        } catch (InterruptedException e) {
-            //nothing yet
+            for (Player player:players){
+                if(!readyPlayers.contains(player))
+                    controller.send(player,"#send#");
+            }
+        } catch (InterruptedException e ) {
+            e.printStackTrace();
         }
     }
 }

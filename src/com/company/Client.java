@@ -23,7 +23,7 @@ public class Client {
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                 ExecutorService executorService = Executors.newCachedThreadPool();
                 executorService.execute(new Sender(out,socket));
-                executorService.execute(new Receiver(in , socket));
+                executorService.execute(new Receiver(in , socket ,out));
                 break;
 
             } catch (Exception e) {

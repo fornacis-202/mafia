@@ -69,17 +69,22 @@ public class Game {
     }
     private String calculateResult(Player mafiaShot,Player lectorChoice,Player doctorChoice,Player sniperChoice,Player sniper,Player psychologistChoice,boolean armoredChoice){
         String result = "";
-        if(mafiaShot!=null && !mafiaShot.getRole().equals(Role.ARMORED) && !mafiaShot.equals(doctorChoice)){
-            killAtNight(mafiaShot);
-            result += ConsoleColor.YELLOW + mafiaShot.getName() +ConsoleColor.CYAN_BOLD +" was killed last night.\n";
+        if(mafiaShot!=null  && !mafiaShot.equals(doctorChoice)){
+            if(mafiaShot.getRole().equals(Role.ARMORED) && mafiaShot.isProtected()){
+                mafiaShot.setProtected(false);
+            }else {
+                killAtNight(mafiaShot);
+                result += ConsoleColor.YELLOW + mafiaShot.getName() + ConsoleColor.CYAN_BOLD + " was killed last night.\n";
+            }
         }
         if(sniperChoice!=null){
-            if((sniperChoice.getRole().equals(Role.GOD_FATHER) || sniperChoice.getRole().equals(Role.DOCTOR_LECTER) || sniperChoice.equals(Role.MAFIA))){
+            if((sniperChoice.getRole().equals(Role.GOD_FATHER) || sniperChoice.getRole().equals(Role.DOCTOR_LECTER) || sniperChoice.getRole().equals(Role.MAFIA))){
                 if(!sniperChoice.equals(lectorChoice)){
                     killAtNight(sniperChoice);
                     result += ConsoleColor.YELLOW + sniperChoice.getName() +ConsoleColor.CYAN_BOLD +" was killed last night.\n";
                 }
             }else {
+                killAtNight(sniper);
                 result += ConsoleColor.YELLOW + sniper.getName() +ConsoleColor.CYAN_BOLD +" was killed last night.\n";
             }
         }
@@ -162,7 +167,7 @@ public class Game {
     private void detectiveOperation() {
         Player detective;
         if ((detective = roleFinder(Role.DETECTIVE)) != null) {
-            controller.send(detective, ConsoleColor.CYAN + "Chose someone to know it's role\n");
+            controller.send(detective, ConsoleColor.CYAN + "Chose someone to know it's role:");
             Player detectiveChoice = new NightChoices(players, detective, ConsoleColor.CYAN).start(false);
             if (detectiveChoice != null) {
                 if (detectiveChoice.getRole().equals(Role.DOCTOR_LECTER) || detectiveChoice.getRole().equals(Role.MAFIA)) {
@@ -177,10 +182,11 @@ public class Game {
     }
     private boolean armoredOperation() {
         Player armored;
-        if ((armored = roleFinder(Role.ARMORED)) != null) {
+        if ((armored = roleFinder(Role.ARMORED)) != null && armored.getAbilityRemain()>0) {
             controller.send(armored, ConsoleColor.CYAN + "Do you want to ask to know the remaining roles?\n1)Yes\n2)No\n");
             Integer num = controller.receiveInt(armored, 1, 2);
             if (num != null && num == 1) {
+                armored.oneUseAbility();
                 return true;
             }
         }

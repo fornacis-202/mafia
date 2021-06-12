@@ -8,10 +8,12 @@ import java.util.Scanner;
 
 public class Receiver implements Runnable{
     private ObjectInputStream in;
+    private ObjectOutputStream out;
     private Socket socket;
-    public Receiver(ObjectInputStream in , Socket socket){
+    public Receiver(ObjectInputStream in , Socket socket , ObjectOutputStream out){
         this.in=in;
         this.socket = socket;
+        this.out=out;
     }
     @Override
     public void run() {
@@ -20,22 +22,25 @@ public class Receiver implements Runnable{
             String line;
             while (true){
                 line = (String) in.readObject();
-                if(!(line.equals(""))){
+                if(line.equals("#send#")){
+                    out.writeObject(null);
+                }
+                else if(!(line.equals(""))){
                     System.out.println(line);
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
+
+        }finally {
             System.out.println(ConsoleColor.RESET+"you got disconnected");
-            System.exit(0);
-        }
-        finally {
             try {
                 if(!socket.isClosed())
-                     socket.close();
-            } catch (IOException e) {
+                    socket.close();
+            } catch (IOException ee) {
                 //nothing
             }
-
+            System.exit(0);
         }
+
     }
 }

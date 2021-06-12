@@ -68,6 +68,7 @@ public class DayVoting {
         try {
             executorService.invokeAll(callables, seconds, TimeUnit.SECONDS);
             executorService.shutdownNow();
+            controller.sendToGroup(players,"#send#");
             return playerIntegerHashMap;
         } catch (InterruptedException e) {
             //nothing yet

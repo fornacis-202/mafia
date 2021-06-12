@@ -19,21 +19,23 @@ public class Sender implements Runnable{
             String line;
             while (true){
                line = sc.nextLine();
-               out.reset();
+               if(line.trim().equals("exit")){
+                   break;
+               }
                out.writeObject(line);
             }
         } catch (IOException e) {
+
+        }finally {
             System.out.println(ConsoleColor.RESET+"you got disconnected");
-            System.exit(0);
-        }
-        finally {
             try {
                 if(!socket.isClosed())
                     socket.close();
-            } catch (IOException e) {
+            } catch (IOException ee) {
                 //nothing
             }
-
+            System.exit(0);
         }
+
     }
 }
