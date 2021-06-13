@@ -10,11 +10,23 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * The type Day voting.
+ */
 public class DayVoting {
     private ArrayList<Player> players;
     private int seconds;
+    /**
+     * The Controller.
+     */
     Controller controller;
 
+    /**
+     * Instantiates a new Day voting.
+     *
+     * @param players the players
+     * @param seconds the time limit
+     */
     public DayVoting(ArrayList<Player> players,int seconds){
         this.players=new ArrayList<>();
         for(Player player : players){
@@ -26,6 +38,11 @@ public class DayVoting {
         controller=Controller.getInstance();
     }
 
+    /**
+     * Starts the voting.
+     *
+     * @return the player
+     */
     public Player start(){
         sendOptions();
         HashMap<Player , Integer> playerIntegerHashMap = receiveVotes();
@@ -34,6 +51,10 @@ public class DayVoting {
 
 
     }
+
+    /**
+     * send options to the players
+     */
     private void sendOptions(){
         int i = 1;
         String options =ConsoleColor.BLUE_BOLD+  "vote someone to be kicked out!\nVoting will last for "+seconds+" seconds !\n";
@@ -43,6 +64,11 @@ public class DayVoting {
         }
         controller.sendToAll(options);
     }
+
+    /**
+     * receive votes from clients
+     * @return a hash map containing players and votes
+     */
     private HashMap<Player,Integer> receiveVotes(){
         ExecutorService executorService = Executors.newCachedThreadPool();
         HashMap<Player, Integer> playerIntegerHashMap = new HashMap<>();
@@ -75,6 +101,12 @@ public class DayVoting {
             return null;
         }
     }
+
+    /**
+     * calculate the result of the voting
+     * @param votes
+     * @return the player who has the highest vote
+     */
     private Player result(ArrayList<Integer> votes){
         if(votes.size()==0)
             return null;
@@ -94,6 +126,11 @@ public class DayVoting {
 
         return players.get(max.getKey()-1);
     }
+
+    /**
+     * prints the result of the voting
+     * @param playerIntegerHashMap
+     */
     private void sendResult(HashMap<Player,Integer> playerIntegerHashMap){
         String result="";
         for (Player player : playerIntegerHashMap.keySet()){

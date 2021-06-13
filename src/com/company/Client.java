@@ -8,8 +8,14 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * The type Client.
+ */
 public class Client {
 
+    /**
+     * Start.
+     */
     public void start()  {
         String port;
         while (true) {
@@ -32,6 +38,11 @@ public class Client {
         }
     }
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         new Client().start();
     }

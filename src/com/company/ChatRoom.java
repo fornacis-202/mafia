@@ -4,15 +4,30 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
 
+/**
+ * The type Chat room.
+ */
 public class ChatRoom {
     private int time;
     private ArrayList<Player> players;
     private String color;
+
+    /**
+     * Instantiates a new Chat room.
+     *
+     * @param time    the time
+     * @param players the players
+     * @param color   the console color
+     */
     public ChatRoom(int time , ArrayList<Player> players , String color){
         this.time=time;
         this.players=players;
         this.color=color;
     }
+
+    /**
+     * Start.
+     */
     public void start(){
         Controller controller = Controller.getInstance();
         controller.sendToGroup(players,color+"ChatRoom started!\nYou can send message by typing it an pressing enter.\nSend \"ready\" Whenever you are done chatting.\nThis chat room will last for "+time+" minutes.");

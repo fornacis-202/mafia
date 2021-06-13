@@ -4,9 +4,17 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 
+/**
+ * The type Role generator , generates the role for each client
+ */
 public class RoleGenerator {
     private int num;
 
+    /**
+     * Instantiates a new Role generator.
+     *
+     * @param num1 the number of the player in the game
+     */
     public RoleGenerator(int num1){
         num=num1;
     }
@@ -14,6 +22,10 @@ public class RoleGenerator {
         roles.add(role);
     }
 
+    /**
+     * generates a list of the roles must be in the game
+     * @return the list
+     */
     private ArrayList<Role> generateList(){
         int mafiaNum=num/3;
         int cityNum=num-mafiaNum;
@@ -54,6 +66,10 @@ public class RoleGenerator {
         return roles;
     }
 
+    /**
+     * disturb roles between the player randomly
+     * @param roles
+     */
     private void disturbRoles(ArrayList<Role> roles){
         Random random = new Random();
         int index;
@@ -70,6 +86,10 @@ public class RoleGenerator {
             roles.remove(index);
         }
     }
+
+    /**
+     * Start the role generating and disturbing it
+     */
     public void start(){
         disturbRoles(generateList());
     }

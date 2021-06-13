@@ -5,9 +5,19 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
+/**
+ * The type Sender, sends everything the client rights to server
+ */
 public class Sender implements Runnable{
     private ObjectOutputStream out;
     private Socket socket;
+
+    /**
+     * Instantiates a new Sender.
+     *
+     * @param out    the output stream
+     * @param socket the socket
+     */
     public Sender(ObjectOutputStream out , Socket socket){
         this.out=out;
         this.socket = socket;

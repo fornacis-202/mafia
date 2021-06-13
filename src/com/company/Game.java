@@ -2,6 +2,9 @@ package com.company;
 
 import java.util.ArrayList;
 
+/**
+ * The type Game.
+ */
 public class Game {
     private ArrayList<Player> players;
     private ArrayList<Player> mafias;
@@ -14,6 +17,11 @@ public class Game {
         mafias = new ArrayList<>();
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static Game getInstance() {
         if (instance == null) {
             instance = new Game();
@@ -21,6 +29,9 @@ public class Game {
         return instance;
     }
 
+    /**
+     * Start.
+     */
     public void start() {
         initialMafias();
         introductionNight();
@@ -32,6 +43,10 @@ public class Game {
 
     }
 
+    /**
+     * simulating a day in game
+     * @param nightEvent things happened last night
+     */
     private void day(String nightEvent) {
         controller.sendToAll(ConsoleColor.BLUE_BOLD + "Change to " + ConsoleColor.CYAN_BRIGHT + "Day!");
         if (nightEvent != null && !nightEvent.equals("")) {
@@ -46,6 +61,11 @@ public class Game {
 
 
     }
+
+    /**
+     * simulating a night in the game
+     * @return the things happened tonight
+     */
 
     private String night() {
         controller.sendToAll(ConsoleColor.BLUE_BOLD + "Change to " + ConsoleColor.BLACK_BRIGHT + "Night!");
@@ -67,6 +87,18 @@ public class Game {
         return calculateResult(mafiaShot,lectorChoice,doctorChoice,sniperChoice,sniper,psychologistChoice,armoredChoice);
 
     }
+
+    /**
+     * calculate the result of outs,muted&... at night
+     * @param mafiaShot
+     * @param lectorChoice
+     * @param doctorChoice
+     * @param sniperChoice
+     * @param sniper
+     * @param psychologistChoice
+     * @param armoredChoice
+     * @return the result as a string
+     */
     private String calculateResult(Player mafiaShot,Player lectorChoice,Player doctorChoice,Player sniperChoice,Player sniper,Player psychologistChoice,boolean armoredChoice){
         String result = "";
         if(mafiaShot!=null  && !mafiaShot.equals(doctorChoice)){
@@ -102,6 +134,11 @@ public class Game {
         return result;
 
     }
+
+    /**
+     * ask head mafia to chose someone to kill at night
+     * @return the player mafia choosed to kill
+     */
     private Player mafiaShoot(){
         Player mafiaShoot=null;
         Player godFather;
@@ -122,6 +159,10 @@ public class Game {
         return mafiaShoot;
     }
 
+    /**
+     * ask lector to save a mafia
+     * @return the mafia he saves
+     */
     private Player lectorOperation() {
         Player lector;
         if ((lector = roleFinder(Role.DOCTOR_LECTER)) != null && (mafias.size() > 1 || lector.getAbilityRemain() > 0)) {
@@ -136,6 +177,10 @@ public class Game {
         return null;
     }
 
+    /**
+     * ask doctor to save someone
+     * @return the player he save
+     */
     private Player doctorOperation() {
         Player doctor;
         if ((doctor = roleFinder(Role.DOCTOR)) != null) {
@@ -150,6 +195,10 @@ public class Game {
         return null;
     }
 
+    /**
+     * ask sniper if he wants to shoot someone
+     * @return the player he choosed to shoot
+     */
     private Player sniperOperation() {
         Player sniper;
         if ((sniper = roleFinder(Role.SNIPER)) != null) {
@@ -164,6 +213,9 @@ public class Game {
         return null;
     }
 
+    /**
+     * tell detective if a he choose person is mafia or not
+     */
     private void detectiveOperation() {
         Player detective;
         if ((detective = roleFinder(Role.DETECTIVE)) != null) {
@@ -180,6 +232,11 @@ public class Game {
         }
 
     }
+
+    /**
+     * ask armored if he wants to ask the remaining roles or not
+     * @return
+     */
     private boolean armoredOperation() {
         Player armored;
         if ((armored = roleFinder(Role.ARMORED)) != null && armored.getAbilityRemain()>0) {
@@ -193,6 +250,10 @@ public class Game {
         return false;
     }
 
+    /**
+     * ask psychologist if ha wants to mute someone
+     * @return
+     */
     private Player psychologistOperation() {
         Player psychologist;
         if ((psychologist = roleFinder(Role.PSYCHOLOGIST)) != null) {
@@ -208,6 +269,9 @@ public class Game {
     }
 
 
+    /**
+     * check if the game is finished or not and if so , finish the program
+     */
     public void endGame() {
         ArrayList<Player> aliveMafias = new ArrayList<>();
         for (Player player : mafias) {
@@ -234,7 +298,12 @@ public class Game {
     }
 
 
-    public void mayorOperation(Player player) {
+    /**
+     * ask mayor if he wants to cancel the voting or not
+     *
+     * @param player the player who is going to be out
+     */
+    private void mayorOperation(Player player) {
         Player mayor;
         if ((mayor = roleFinder(Role.MAYOR)) != null && mayor.isAlive() && player != null && !player.getRole().equals(Role.MAYOR)) {
             controller.send(mayor, ConsoleColor.YELLOW + player.getName() + ConsoleColor.CYAN + " is going to be kicked out ,do you want to cancel it?\n1)Yes\n2)No");
@@ -249,17 +318,30 @@ public class Game {
         }
     }
 
-    public void killInDay(Player player) {
+    /**
+     * Kill in day.
+     *
+     * @param player the player
+     */
+    private void killInDay(Player player) {
         player.setAlive(false);
         controller.sendToAll(ConsoleColor.YELLOW + player.getName() + ConsoleColor.BLUE_BOLD + " was kicked out!");
         controller.send(player, ConsoleColor.BLUE_BOLD + "You were kicked out of the game :( \nYou can still spectate the game or you can type\"exit\"to leave the game. ");
     }
 
-    public void killAtNight(Player player){
+    /**
+     * Kill at night.
+     *
+     * @param player the player
+     */
+    private void killAtNight(Player player){
         player.setAlive(false);
         controller.send(player, ConsoleColor.BLUE_BOLD + "You were killed :( \nYou can still spectate the game or you can type\"exit\"to leave the game. ");
     }
 
+    /**
+     * simulating introduction night in the game
+     */
     private void introductionNight() {
         controller.sendToAll(ConsoleColor.BLUE_BOLD + "change to " + ConsoleColor.BLACK_BRIGHT + "Introduction Night!");
         sendToMafias(ConsoleColor.RED + mafiasRoles());
@@ -274,13 +356,23 @@ public class Game {
     }
 
 
-    public void sendToMafias(String string) {
+    /**
+     * Send to mafias.
+     *
+     * @param string the string
+     */
+    private void sendToMafias(String string) {
         for (Player player : mafias) {
             controller.send(player, string);
         }
     }
 
-    public void sleep(int seconds) {
+    /**
+     * Sleep.
+     *
+     * @param seconds the seconds
+     */
+    private void sleep(int seconds) {
         try {
             Thread.sleep(seconds * 1000);
         } catch (InterruptedException ie) {
@@ -288,7 +380,12 @@ public class Game {
         }
     }
 
-    public String mafiasRoles() {
+    /**
+     * Mafias roles string.
+     *
+     * @return the string contains mafia names and roles
+     */
+    private String mafiasRoles() {
         String mafia = "";
         for (Player player : mafias) {
             mafia += player.getName() + "\t" + player.getRole()+"\n";
@@ -296,6 +393,9 @@ public class Game {
         return mafia;
     }
 
+    /**
+     * add mafias to the arraylist of mafias
+     */
     private void initialMafias() {
         for (Player player : players) {
             if (player.getRole().equals(Role.GOD_FATHER) || player.getRole().equals(Role.DOCTOR_LECTER) || player.getRole().equals(Role.MAFIA)) {
@@ -305,6 +405,12 @@ public class Game {
 
     }
 
+    /**
+     * finds a role if it is in the game
+     *
+     * @param role the role
+     * @return the player
+     */
     public Player roleFinder(Role role) {
         for (Player player : players) {
             if (player.getRole().equals(role) && player.isAlive()) {
@@ -314,10 +420,20 @@ public class Game {
         return null;
     }
 
+    /**
+     * Add player.
+     *
+     * @param player the player
+     */
     public void addPlayer(Player player) {
         players.add(player);
     }
 
+    /**
+     * Remove player.
+     *
+     * @param player the player
+     */
     public void removePlayer(Player player) {
         players.remove(player);
         mafias.remove(player);

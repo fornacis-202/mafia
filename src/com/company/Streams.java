@@ -5,10 +5,19 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * The type Streams , keeps the player's socket , inputStream and outputStream.
+ */
 public class Streams {
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private Socket socket;
+
+    /**
+     * Instantiates a new Streams.
+     *
+     * @param socket the socket
+     */
     public Streams(Socket socket){
         try {
             this.socket=socket;
@@ -19,14 +28,29 @@ public class Streams {
         }
     }
 
+    /**
+     * Gets out.
+     *
+     * @return the out
+     */
     public ObjectOutputStream getOut() {
         return out;
     }
 
+    /**
+     * Gets in.
+     *
+     * @return the in
+     */
     public ObjectInputStream getIn() {
         return in;
     }
 
+    /**
+     * Close boolean.
+     *
+     * @return true if successful
+     */
     public boolean close(){
         try {
             out.close();

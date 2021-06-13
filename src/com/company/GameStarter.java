@@ -8,7 +8,15 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * The type Game starter , starts server
+ */
 public class GameStarter {
+    /**
+     * wait for the players to join the sever
+     *
+     * @param num the num
+     */
     public void join(int num){
         try {
             //connecting to client
@@ -30,18 +38,31 @@ public class GameStarter {
         }
 
     }
+
+    /**
+     * Initial the class Game to be ready to start
+     */
     public void initialGame(){
         for (Player player:Controller.getInstance().getPlayerStreamsMap().keySet()){
             Game.getInstance().addPlayer(player);
         }
 
     }
+
+    /**
+     * Wait for clients to send ready
+     */
     public void waitForReady(){
         Controller.getInstance().sendToAll(ConsoleColor.BLUE_BOLD + "send 1 if you are ready ");
         HashMap<Player,Integer> playerIntegerHashMap=Controller.getInstance().receiveIntFromAll(1,1);
         System.out.println("finished");
     }
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         System.out.println("enter the number of the player: ");
         int num;

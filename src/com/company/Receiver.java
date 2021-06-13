@@ -6,10 +6,21 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
+/**
+ * The type Receiver , receives data from server and print them for the client
+ */
 public class Receiver implements Runnable{
     private ObjectInputStream in;
     private ObjectOutputStream out;
     private Socket socket;
+
+    /**
+     * Instantiates a new Receiver.
+     *
+     * @param in     the input stream
+     * @param socket the socket
+     * @param out    the output stream
+     */
     public Receiver(ObjectInputStream in , Socket socket , ObjectOutputStream out){
         this.in=in;
         this.socket = socket;

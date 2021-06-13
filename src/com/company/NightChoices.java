@@ -2,16 +2,33 @@ package com.company;
 
 import java.util.ArrayList;
 
+/**
+ * The type Night choices , does the ask for player who is going to be choosed at night
+ */
 public class NightChoices {
     private  Player player;
     private String consoleColor;
     private ArrayList<Player> players;
+
+    /**
+     * Instantiates a new Night choices.
+     *
+     * @param players      the players in the choices
+     * @param player       the player who is going to chose
+     * @param consoleColor the console color
+     */
     public NightChoices(ArrayList<Player> players , Player player, String consoleColor){
         this.consoleColor=consoleColor;
         this.player=player;
         this.players=players;
     }
 
+    /**
+     * Start player.
+     *
+     * @param show to show the player who is choosing in the options or not
+     * @return the player
+     */
     public Player start(boolean show){
         ArrayList<Player> optionPlayers=new ArrayList<>();
         String options="";
